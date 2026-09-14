@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ProjectStatus {
+  ON_TRACK
+  AT_RISK
+  DELAYED
+}
+
+enum ProjectStage {
+  RFQ
+  ENGINEERING
+  PROCUREMENT
+  FABRICATION
+  MACHINING
+  ASSEMBLY
+  QUALITY
+  DISPATCH
+  COMPLETED
+}
+
+enum WorkOrderStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+}
+
+enum UserRole {
+  ADMIN
+  PROJECT_MANAGER
+  ENGINEER
+  QA
+  SHOP_FLOOR
+}
+
+enum InspectionResult {
+  PENDING
+  PASS
+  FAIL
+}
+
+enum DocumentStatus {
+  ACTIVE
+  SUPERSEDED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  inspections  Inspection[]
+}
+
+model Project {
+  id           String        @id
+  name         String
+  customer     String
+  progress     Int
+  status       ProjectStatus
+  currentStage ProjectStage
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  workOrders   WorkOrder[]
+  inspections   Inspection[]
+  documents    Document[]
+}
+
+model WorkOrder {
+  id           String          @id
+  projectId    String
+  title        String
+  operation    String
+  machine      String
+  status       WorkOrderStatus
+  progress     Int
+  plannedStart DateTime?
+  plannedEnd   DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  project      Project         @relation(fields: [projectId], references: [id])
+  inspections   Inspection[]
+
+  @@index([projectId])
+}
+
+model Inspection {
+  id          String          @id @default(cuid())
+  projectId   String
+  workOrderId String
+  inspectorId String
+  type        String
+  result      InspectionResult
+  remarks     String?
+  inspectedAt DateTime
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  project     Project         @relation(fields: [projectId], references: [id])
+  workOrder   WorkOrder       @relation(fields: [workOrderId], references: [id])
+  inspector   User            @relation(fields: [inspectorId], references: [id])
+
+  @@index([projectId])
+  @@index([workOrderId])
+  @@index([inspectorId])
+}
+
+model Document {
+  id             String         @id @default(cuid())
+  projectId      String
+  name           String
+  documentNumber String
+  revision       String
+  documentType   String
+  status         DocumentStatus
+  description    String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  project        Project        @relation(fields: [projectId], references: [id])
+
+  @@index([projectId])
+}
