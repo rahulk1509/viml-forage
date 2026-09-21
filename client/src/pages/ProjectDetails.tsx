@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import StatusBadge from '../components/StatusBadge'
 import { hasAnyRole } from '../auth/permissions'
 import { useAuth } from '../context/AuthContext'
+import { API_BASE_URL } from '../config/api'
 import {
   PROJECT_STAGES,
   type Project,
@@ -42,7 +43,7 @@ function ProjectDetails() {
         setProject(null)
 
         const response = await fetch(
-          `http://localhost:5000/api/projects/${encodeURIComponent(projectId)}`,
+          `${API_BASE_URL}/api/projects/${encodeURIComponent(projectId)}`,
           { credentials: 'include', signal: controller.signal },
         )
 
@@ -174,7 +175,7 @@ function ProjectDetails() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/projects/${encodeURIComponent(projectId)}`,
+        `${API_BASE_URL}/api/projects/${encodeURIComponent(projectId)}`,
         {
           method: 'PATCH',
           credentials: 'include',

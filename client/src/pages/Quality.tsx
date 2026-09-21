@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { hasAnyRole } from '../auth/permissions'
 import { useAuth } from '../context/AuthContext'
+import { API_BASE_URL } from '../config/api'
 
 type InspectionResult = 'PENDING' | 'PASS' | 'FAIL'
 
@@ -115,15 +116,15 @@ function Quality() {
   async function loadQualityData(signal?: AbortSignal) {
     const [inspectionResponse, projectResponse, workOrderResponse] =
       await Promise.all([
-        fetch('http://localhost:5000/api/inspections', {
+        fetch(`${API_BASE_URL}/api/inspections`, {
           credentials: 'include',
           signal,
         }),
-        fetch('http://localhost:5000/api/projects', {
+        fetch(`${API_BASE_URL}/api/projects`, {
           credentials: 'include',
           signal,
         }),
-        fetch('http://localhost:5000/api/work-orders', {
+        fetch(`${API_BASE_URL}/api/work-orders`, {
           credentials: 'include',
           signal,
         }),
@@ -240,7 +241,7 @@ function Quality() {
     setIsSubmitting(true)
     setFormError(null)
     try {
-      const response = await fetch('http://localhost:5000/api/inspections', {
+      const response = await fetch(`${API_BASE_URL}/api/inspections`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

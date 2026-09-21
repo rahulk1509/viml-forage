@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import type { UserRole } from '../auth/permissions'
+import { API_BASE_URL } from '../config/api'
 
 export type AuthUser = {
   id: string
@@ -47,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function checkAuthentication() {
       try {
-        const response = await fetch('http://localhost:5000/api/auth/me', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
           credentials: 'include',
           signal: controller.signal,
         })
@@ -86,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signOut() {
     try {
-      await fetch('http://localhost:5000/api/auth/logout', {
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: 'POST',
         credentials: 'include',
       })

@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth, type AuthUser } from '../context/AuthContext'
+import { API_BASE_URL } from '../config/api'
 
 function Login() {
   const navigate = useNavigate()
@@ -31,7 +32,7 @@ function Login() {
     setError(null)
 
     try {
-      const loginResponse = await fetch('http://localhost:5000/api/auth/login', {
+      const loginResponse = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -57,7 +58,7 @@ function Login() {
         throw new Error('The login response was invalid.')
       }
 
-      const meResponse = await fetch('http://localhost:5000/api/auth/me', {
+      const meResponse = await fetch(`${API_BASE_URL}/api/auth/me`, {
         credentials: 'include',
       })
 

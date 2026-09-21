@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { hasAnyRole } from '../auth/permissions'
 import { useAuth } from '../context/AuthContext'
+import { API_BASE_URL } from '../config/api'
 
 type WorkOrderStatus =
   | 'NOT_STARTED'
@@ -139,7 +140,7 @@ function Production() {
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch('http://localhost:5000/api/work-orders', {
+        const response = await fetch(`${API_BASE_URL}/api/work-orders`, {
           credentials: 'include',
           signal: controller.signal,
         })
@@ -208,7 +209,7 @@ function Production() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/work-orders/${encodeURIComponent(editingWorkOrderId)}`,
+        `${API_BASE_URL}/api/work-orders/${encodeURIComponent(editingWorkOrderId)}`,
         {
           method: 'PATCH',
           credentials: 'include',

@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs'
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import { UserRole } from '@prisma/client'
 import prisma from '../../lib/prisma.js'
-import { isProductionRuntime } from '../../lib/runtime.js'
 
 export const AUTH_COOKIE_NAME = 'vmil_forge_token'
 
@@ -28,7 +27,7 @@ function getJwtSecret() {
 }
 
 export function getAuthCookieOptions() {
-  const isProduction = isProductionRuntime()
+  const isProduction = process.env.NODE_ENV === 'production'
 
   return {
     httpOnly: true,

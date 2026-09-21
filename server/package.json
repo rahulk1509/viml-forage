@@ -7,7 +7,6 @@
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
-    "deploy": "wrangler deploy",
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate",
     "prisma:seed": "prisma db seed"
@@ -24,7 +23,6 @@
     "pg": "^8.23.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260914.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
@@ -34,8 +32,7 @@
     "@types/pg": "^8.23.1",
     "prisma": "^6.16.2",
     "tsx": "^4.20.5",
-    "typescript": "^5.9.2",
-    "wrangler": "^4.131.1"
+    "typescript": "^5.9.2"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

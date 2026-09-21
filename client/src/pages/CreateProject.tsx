@@ -5,6 +5,7 @@ import {
   type ProjectStage,
   type ProjectStatus,
 } from '../types/Project'
+import { API_BASE_URL } from '../config/api'
 
 type ProjectForm = {
   id: string
@@ -76,7 +77,7 @@ function CreateProject() {
     setError(null)
 
     try {
-      const response = await fetch('http://localhost:5000/api/projects', {
+      const response = await fetch(`${API_BASE_URL}/api/projects`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

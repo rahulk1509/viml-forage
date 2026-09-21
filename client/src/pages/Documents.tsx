@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { hasAnyRole } from '../auth/permissions'
 import { useAuth } from '../context/AuthContext'
+import { API_BASE_URL } from '../config/api'
 
 type DocumentStatus = 'ACTIVE' | 'SUPERSEDED'
 type DocumentRecord = {
@@ -65,8 +66,8 @@ function Documents() {
 
   async function loadData(signal?: AbortSignal) {
     const [documentResponse, projectResponse] = await Promise.all([
-      fetch('http://localhost:5000/api/documents', { credentials: 'include', signal }),
-      fetch('http://localhost:5000/api/projects', { credentials: 'include', signal }),
+      fetch(`${API_BASE_URL}/api/documents`, { credentials: 'include', signal }),
+      fetch(`${API_BASE_URL}/api/projects`, { credentials: 'include', signal }),
     ])
     if (!documentResponse.ok) throw new Error(`Unable to load documents (${documentResponse.status})`)
     if (!projectResponse.ok) throw new Error(`Unable to load projects (${projectResponse.status})`)
@@ -113,7 +114,7 @@ function Documents() {
     setIsSubmitting(true)
     setFormError(null)
     try {
-      const response = await fetch('http://localhost:5000/api/documents', {
+      const response = await fetch(`${API_BASE_URL}/api/documents`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

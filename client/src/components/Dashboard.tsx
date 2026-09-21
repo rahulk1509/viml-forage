@@ -5,6 +5,7 @@ import StatsCard from './StatsCard'
 import ProjectTable from './ProjectTable'
 import type { Project } from '../types/Project'
 import { useAuth } from '../context/AuthContext'
+import { API_BASE_URL } from '../config/api'
 import { hasAnyRole } from '../auth/permissions'
 
 function Dashboard() {
@@ -23,7 +24,7 @@ function Dashboard() {
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch('http://localhost:5000/api/projects', {
+        const response = await fetch(`${API_BASE_URL}/api/projects`, {
           credentials: 'include',
           signal: controller.signal,
         })

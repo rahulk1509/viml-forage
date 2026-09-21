@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import StatusBadge from '../components/StatusBadge'
 import type { Project } from '../types/Project'
+import { API_BASE_URL } from '../config/api'
 
 type WorkOrderStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'BLOCKED' | 'COMPLETED'
 type InspectionResult = 'PENDING' | 'PASS' | 'FAIL'
@@ -149,15 +150,15 @@ function Reports() {
         setIsLoading(true)
         setError(null)
         const responses = await Promise.all([
-          fetch('http://localhost:5000/api/projects', {
+          fetch(`${API_BASE_URL}/api/projects`, {
             credentials: 'include',
             signal: controller.signal,
           }),
-          fetch('http://localhost:5000/api/work-orders', {
+          fetch(`${API_BASE_URL}/api/work-orders`, {
             credentials: 'include',
             signal: controller.signal,
           }),
-          fetch('http://localhost:5000/api/inspections', {
+          fetch(`${API_BASE_URL}/api/inspections`, {
             credentials: 'include',
             signal: controller.signal,
           }),
